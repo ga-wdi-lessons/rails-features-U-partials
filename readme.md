@@ -16,38 +16,88 @@
 
 ## Framing
 
-## App Layout
+# Update Feature
 
-## Update Feature
+### Add appropriate routes
 
-#### Build edit form view
+The path `/todos/2/edit` is asking to go to the edit view for the todo with id=2
 
-Copy existing create form to build edit form view
+![routing error](images/routing_error.png)
 
-#### Add appropriate routes
+I can check our current Url paths and matching controller actions by running
+
+```
+$ rake routes
+```
+
+To fix this error I need to add a route for `edit`. While I're there let's go ahead and add one for `update`
+
+```rb
+# avoid if using all 7 actions
+Rails.application.routes.draw do
+  resources :todos, only: [:index, :show, :new, :create, :destroy, :edit, :update]
+end
+```
+This will also change what I see if I run `rake routes` again.
+
+Now that I have all 7 actions listed for resources I no longer need to say `only:`
+
+```rb
+# recommended
+Rails.application.routes.draw do
+  resources :todos
+end
+```
+
+If I run `rake routes` again then I'll notice nothing changed.
+
+### Controller edit (get/read)
+
+If I refresh the page I get a new error 😄!
+
+![unkown action](images/unkown_action.png)
+
+To fix this new error I add a controller action
+
+```rb
+def edit
+  @todo = Todo.find(params[:id])
+end
+```
+
+### Build edit form view
+
+If I refresh the page again I get another new error 😄!
+
+![missing template](images/missing_template.png)
+
+Touch `app/views/todos/edit.html.erb` and copy existing `new` form to build edit form view
+
+### Controller update (patch/update)
+
+If I try submitting the form now I'll again get the `Unknown action` error, this time for the `update action`. To fix it I need to add the appropriate controller action:
+
+```rb
+def update
+  @todo = Todo.find(params[:id])
+  @todo.update(todo_params)
+  redirect_to todo_path(@todo)
+end
+```
+
+### Add links from an existing page to the edit page
+
+I should now be able to edit/update my todos. It's awkward to manually got to `/edit`, a link to the page would be much better.
+
+Let's add a link_to helper to our show page
+```rb
+<h2><%= link_to "Edit", edit_todo_path(@todo) %></h2>
+```
+
+### Edit data, explore in index/show
 
 
-#### Controller edit (get/read)
-
-
-#### Controller update (patch/update)
-
-
-#### Edit data, explore in index/show
-
-
-#### Add links to existing pages to the edit page
-
-- Helpers
-  - link_to
-    - anchor tag
-  - form_for
-    - image tag
-  - path helpers
-    - new_artist_path
-    - edit_artist_path(@artist)
-
-#### You do: Add Edit feature to tunr
+### You do: Add Edit feature to tunr
 
 1. Clone [this tunr repo](https://github.com/andrewsunglaekim/tunr_features/tree/index-show-solution
 )
@@ -59,30 +109,51 @@ Copy existing create form to build edit form view
   $ git checkout index-show-solution
   $ git checkout -b add-edit-feature
   ```
-2. Create an `edit.html.erb` view and copy in the new form, and modify it for edit
+2. Add the appropriate route for edit
 
-3. Add the appropriate route for edit
+3. Add controller actions for routes
 
-4. Add controller actions for routes
+4. Create an `edit.html.erb` view and copy in the new form, and modify it for edit
 
-5. Test editing data
+5. Add links from an existing page to the edit page
 
-6. Add links to existing pages to the edit page
+6. Test editing data
 
-## Form Partials
+7. Commit progress!
 
-#### Convert edit & new forms to partials
+# Form Partials
+
+The two files `new.html.erb` and `edit.html.erb` right now are identical. That's not very DRY. Fortunately Rails has something called *partials* that allow us to clean up our code.
+
+### Convert edit & new forms to partials
+
+Create a new file in views called `_form.html.erb`
+
+### Render form partials
 
 
-#### Render form partials
+### You do: Convert forms to partials
+
+Continue working on Tunr:
+
+1. Convert existing new form to use a form partial
+
+2. Test creating data
+
+3. Convert existing edit from to use a partial
+
+4. Test updating data
+
+5. Commit progress!
+
+# Other Partials
+
+### Convert show/index to render partial collections
 
 
-#### You do: Convert forms to partials
+### You do: Convert artist index page to use collection partial
 
-## Other Partials
-
-#### Convert show/index to render partial collections
-
+Modify
 
 
 
@@ -91,3 +162,10 @@ Copy existing create form to build edit form view
 Before you leave, plase take ~3 minutes to complete [this exit ticket.](https://docs.google.com/forms/d/1d03NYFphG6m7yAMUY1OlnJZMQWof7Rt6b5MX3Xn4ZPs/viewform)
 
 ## Additional Resources
+
+
+
+
+- rake routes
+  - paths
+  - link_to
