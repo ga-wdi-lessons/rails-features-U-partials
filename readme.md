@@ -3,16 +3,15 @@
 ## Learning Objectives
 
 - Implement the update feature for a model in rails
-  - Copy existing create form to build edit form
   - Add appropriate routes
+  - Copy existing create form to build edit form
   - Controller edit (get/read)
   - Controller update (patch/update)
   - Add links to existing pages to edit page
   - Edit data, explore in index/show
-  - Edit data, explore it in rails console
 - Convert edit & new forms to partials
   - Render form partials
-- Convert show/index to render partial collections
+- Convert show/index to render partials for collections
 
 ## Framing
 
@@ -49,7 +48,7 @@ Rails.application.routes.draw do
 end
 ```
 
-If I run `rake routes` again then I'll notice nothing changed.
+If I run `rake routes` one more time I'll notice nothing changed.
 
 ### Controller edit (get/read)
 
@@ -77,6 +76,8 @@ Touch `app/views/todos/edit.html.erb` and copy existing `new` form to build edit
 
 If I try submitting the form now I'll again get the `Unknown action` error, this time for the `update action`. To fix it I need to add the appropriate controller action:
 
+Strong Params
+
 ```rb
 def update
   @todo = Todo.find(params[:id])
@@ -90,7 +91,7 @@ end
 I should now be able to edit/update my todos. It's awkward to manually got to `/edit`, a link to the page would be much better.
 
 Let's add a link_to helper to our show page
-```rb
+```erb
 <h2><%= link_to "Edit", edit_todo_path(@todo) %></h2>
 ```
 
@@ -99,14 +100,13 @@ Let's add a link_to helper to our show page
 
 ### You do: Add Edit feature to tunr
 
-1. Clone [this tunr repo](https://github.com/andrewsunglaekim/tunr_features/tree/index-show-solution
-)
+1. Clone [this tunr repo](https://github.com/andrewsunglaekim/tunr_features/tree/new-create-delete)
   - `cd` into it
   - `checkout` the solution from yesterday
   - then create a new branch and switch to it `checkout -b <branchname>`
 
   ```
-  $ git checkout index-show-solution
+  $ git checkout new-create-delete
   $ git checkout -b add-edit-feature
   ```
 2. Add the appropriate route for edit
@@ -127,24 +127,33 @@ The two files `new.html.erb` and `edit.html.erb` right now are identical. That's
 
 ### Convert edit & new forms to partials
 
-Create a new file in views called `_form.html.erb`
+- Create a new file in views called `_form.html.erb`
+
+- Copy and paste the contents of either `new.html.erb` or `edit.html.erb`
 
 ### Render form partials
 
+- Remove the current form with:
+
+```erb
+<%= render 'form' %>
+```
 
 ### You do: Convert forms to partials
 
 Continue working on Tunr:
 
-1. Convert existing new form to use a form partial
+1. Create an appropriate `_form.html.erb`
 
-2. Test creating data
+2. Replace the existing new form with a render of the partial
 
-3. Convert existing edit from to use a partial
+3. Test creating data
 
-4. Test updating data
+4. Replace the existing edit form with a render of the partial
 
-5. Commit progress!
+5. Test updating data
+
+6. Commit progress!
 
 # Other Partials
 
@@ -163,9 +172,5 @@ Before you leave, plase take ~3 minutes to complete [this exit ticket.](https://
 
 ## Additional Resources
 
-
-
-
-- rake routes
-  - paths
-  - link_to
+- [RailsGuides: partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials)
+-
