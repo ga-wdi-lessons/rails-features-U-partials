@@ -8,7 +8,7 @@
 - Convert show/index to render partials for collections
 - Utilize Rails validations to protect application's state from bad data
 
-## Framing (5 min)
+## Framing
 
 We've learned to do a lot so far: we've created simple apps that are able to interact with a database. We can create, read and destroy entries in our database but we can't yet update them.
 
@@ -18,22 +18,24 @@ On top of that, the UI of our pages varies a lot between views. We can add redun
 
 Create, read, and destroy are all you need if nothing ever changes and your users never make mistakes. That, however, isn't always the case...
 
-### Add appropriate routes (10 min)
+### Add Routes (10 minutes / 0:10)
 
-The path `/todos/2/edit` is asking to go to the edit view for the todo with id=2
+Our first objective is to create a view for the user so that they can update an existing todo. This will be located at the path `/todos/:id/edit`, where `:id` is replaced with the id of the todo in question. So, if we go to `/todos/2/edit` now, we get the following error...
 
 ![routing error](images/routing_error.png)
 
-I can check our current url paths and matching controller actions by running
+We can check our current URL paths and matching controller actions by running the following in the terminal...
+
+<!-- AM: Have they run this yet? -->
 
 ```
 $ rake routes
 ```
 
-To fix this error I need to add a route for `edit`. While I'm there I'll go ahead and add one for `update`
+To fix this error we need to add a route for `edit`. While we're there, we'll go ahead and add one for `update`.
 
-- *Edit* will respond to the GET request with the view for the edit form
-- *Update* will respond to the PATCH request sent by changing the appropriate entries in the database
+- *Edit* will respond to the GET request with the view for the edit form.
+- *Update* will respond to the PATCH request sent by changing the appropriate entries in the database.
 
 ```rb
 # avoid if using all 7 actions
@@ -41,68 +43,89 @@ Rails.application.routes.draw do
   resources :todos, only: [:index, :show, :new, :create, :destroy, :edit, :update]
 end
 ```
-This will also change what I see if I run `rake routes` again.
+This will also change what we see if we run `rake routes` again.
 
 ### Remove `only:`
 
 Now that I have all 7 actions listed for resources I no longer need to say `only:`
 
 ```rb
-# recommended
 Rails.application.routes.draw do
   resources :todos
 end
 ```
 
-If I run `rake routes` one more time I'll notice nothing changed.
+If we run `rake routes` one more time I'll notice nothing changed.
 
 <details>
-<summary>
-  Q. Why did we need to say `:only` to begin with?
-</summary>
+  <summary>
+    <strong>Q. What does <code>resources</code> do? Why did we need to say <code>:only</code> to begin with?</strong>
+  </summary>
+
   <br>
+
+  <code>resources</code> sets up all the restful routes for a given model.
+
   We don't want to implement routes that we don't support. Listing a route but not supporting it results in a 500 `Internal Server Error`, where as not having a route results in a 404 `Not Found` error. The latter indicates that the user did not make a valid request.
+
   <br>
 </details>
 
-### Add Edit to Controller (5 minutes)
+### Add Edit to Controller (5 minutes / 0:15)
 
-If we refresh the page we get a new error!
+If we refresh the page we get a new error...
 
 ![unknown action](images/unkown_action.png)
 
-To fix this new error let's add a controller action...
+<details>
+  <summary><strong>Q: What can we do to fix this?</strong></summary>
 
-```rb
-def edit
-  @todo = Todo.find(params[:id])
-end
-```
+  <br>
+
+  Let's add a controller action...
+
+  ```rb
+  def edit
+    @todo = Todo.find(params[:id])
+  end
+  ```
+
+  <br>
+</details>
 
 ### Build Edit Form View
 
-Let's refresh the page. Another new error!
+When we refresh the page, we get another error...
 
 ![missing template](images/missing_template.png)
 
-Create a new file `app/views/todos/edit.html.erb` and copy the existing `new` form into here. Then add a title to both to help distinguish the two apart.
+<details>
 
-```html
-<h2>Edit</h2>
-```
+  <br>
 
-### You Do: Doc Dive - Form Helpers (10 minutes)
+  <summary><strong>Q: What can we do to fix this?</strong></summary>
+
+  Create a new file `app/views/todos/edit.html.erb` and copy the existing `new` form into here. Then add a title to both to help distinguish the two apart.
+
+  ```html
+  <h2>Edit</h2>
+  ```
+
+  <br>
+</details>
+
+
+### You Do: Doc Dive - Form Helpers (10 minutes / 0:25)
 
 Read [form helpers](http://guides.rubyonrails.org/form_helpers.html#helpers-for-generating-form-elements) from 1.3 _Helpers for Generating Form Elements_ to 2.4 _PATCH, PUT, or DELETE_
 
 Try to write down answers to the following questions...
+- <strong>What is a form helper?</strong>
+- <strong>How is the key used in params controlled?</strong>
+- <strong>What are the long and short styles of invoking `form_for`? Is there an advantage to one or the other?</strong>
+- <strong>Why did we not have to specify the method for the new & edit forms?</strong>
 
-- What is a form helper?
-- How is the key used in params controlled?
-- What are the long and short styles of invoking `form_for`? Is there an advantage to one or the other?
-- Why did we not have to specify the method for the new & edit forms?
-
-### Add Update to Controller (5 minutes)
+### Add Update to Controller (5 minutes / 0:30)
 
 If we try submitting the form now we'll again get the `Unknown action` error, this time for `update`. To fix it, we need to add the appropriate controller action...
 
@@ -116,50 +139,45 @@ end
 
 > The private method `todo_params` we created is called '[Strong Params](http://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters)' and it prevents [mass assignment attacks](https://en.wikipedia.org/wiki/Mass_assignment_vulnerability)
 
-### Add links from an existing page to the edit page (5 min)
+### Add Links to Show (5 minutes / 0:35)
 
-I should now be able to edit/update my todos. It's awkward to manually got to `/edit`, a link to the page would be much better.
-
-Let's add a `link_to` helper to our show page...
+We should now be able to edit/update our todos. It's awkward to manually have to add `/edit` in the URL bar. A link on a show page to `/edit` would be much better. Let's do that with a `link_to` helper...
 
 ```erb
 <h2><%= link_to "Edit", edit_todo_path(@todo) %></h2>
 ```
 
-### Edit data, explore in index/show
+### Edit Data, Explore in Index/Show
 
-### Break! (10 min)
+## Break (10 minutes / 0:45)
 
-### You do: Add Edit feature to tunr (20min)
+## You Do: Add Edit to Tunr (25 minutes / 1:10)
 
-1. Clone [this tunr repo](https://github.com/andrewsunglaekim/tunr_features/tree/new-create-delete)
+> 20 minutes exercise. 5 minutes review.
+
+1. Clone [this tunr repo](https://github.com/andrewsunglaekim/tunr_features/tree/new-create-delete).
   - `cd` into it
   - `checkout` the solution from yesterday
-  - then create a new branch and switch to it `checkout -b <branchname>`
+  - ...then create a new branch and switch to it `checkout -b <branchname>`
 
   ```
   $ git checkout new-create-delete
   $ git checkout -b add-edit-feature
   ```
-2. Add the appropriate route for edit
-
-3. Add controller actions for routes
-
-4. Create an `edit.html.erb` view and copy in the new form, and modify it for edit
-
-5. Add links from an existing page to the edit page
-
-6. Test editing data
-
+2. Add the appropriate route for edit.
+3. Add controller actions for routes.
+4. Create an `edit.html.erb` view and copy in the new form, and modify it for edit.
+5. Add links from an existing page to the edit page.
+6. Test editing data.
 7. Commit progress!
 
 # Application Layout
 
 Notice that the views we have been creating are not complete HTML pages. They are actually partial pages. By default Rails uses the file `app/views/layous/application.html.erb` to wrap all of these partial pages with the appropriate missing bits of HTML. Rails finds the proper layout and combines it with the view corresponding to the appropriate controller action and renders the two as a single HTML file.
 
-### Yield (5 min)
+### Yield (5 minutes / 1:15)
 
-If you take a look at that file you'll see:
+If you take a look at that file you'll see...
 
 ```erb
 <%= yield %>
@@ -168,9 +186,11 @@ If you take a look at that file you'll see:
 
 In other words yield is where the partial pages get inserted.
 
-### Content in layout (5 min)
+### Content in Layout (5 minutes / 1:20)
 
 If we wanted some content to remain the same across pages we could include it directly in the layout. Nav bars and footers are great candidates for things you might want to remain constant.
+
+<!-- AM: Change up footer. -->
 
 ```html
 <nav>
@@ -185,83 +205,79 @@ If we wanted some content to remain the same across pages we could include it di
 </footer>
 ```
 
-### Additional layouts
+### Additional Layouts
 
 There may be times when you need to use multiple layouts in an application. Rails will first look for a file in `app/views/layouts` with the same base name as the controller. If there is no such controller-specfic layout, Rails uses `app/views/layouts/application.html.erb`.
 
 Instead of using the ones Rails looks for, you can explicitly tell it to use the layout of your choosing with the `render` method in a controller action. Or by using the `layout` method to override the layout conventions for an entire controller.
 
-[Render also does a whole bunch more](http://guides.rubyonrails.org/layouts_and_rendering.html#using-render)
+[Render also does a whole bunch more...](http://guides.rubyonrails.org/layouts_and_rendering.html#using-render)
 
 # Form Partials
 
 The two files `new.html.erb` and `edit.html.erb` right now are identical. That's not very DRY. Fortunately Rails has something called *partials* that allow us to clean up our code.
 
-### You do: Doc Dive! - Partials (10 min)
+### You Do: Doc Dive - Partials (10 minutes / 1:30)
 
 Read  [partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials) from 3.4 _Using Partials_ to 3.4.7 _Spacer Templates_
 
 Try to write down answers to the following questions:
+- <strong>How do you add a partial to a page?</strong>
+- <strong>When are partials useful?</strong>
+- <strong>What can be included in a partial?</strong>
 
-Q. How do you add a partial to a page?
+### Convert Edit & New Forms to Partials (5 minutes / 1:35)
 
-Q. When are partials useful?
-
-Q. What can be included in a partial?
-
-### Convert edit & new forms to partials (5 min)
-
+Only two steps required here...
 - Create a new file in views called `_form.html.erb`
-
 - Copy and paste the contents of either `new.html.erb` or `edit.html.erb`
 
-### Render form partials
+> The underscore in the partial file name is convention.
 
-- Replace the current form with:
+### Render Form Partials
+
+- Replace the current form with...
 
 ```erb
 <%= render 'form' %>
 ```
 
-### You do: Convert forms to partials (10 min)
+### You Do: Convert Forms to Partials (15 minutes / 1:50)
 
-Continue working on Tunr:
+> 10 minutes exercise. 5 minutes review.
+
+Continue working on Tunr...
 
 1. Create an appropriate `_form.html.erb`
-
 2. Replace the existing new form with a render of the partial
-
 3. Test creating data
-
 4. Replace the existing edit form with a render of the partial
-
 5. Test updating data
-
 6. Commit progress!
 
-# Other Partials
+## Break (10 minutes / 2:00)
 
-### Convert show/index to render partial collections
+## Other Partials
 
-- Create a `_todo.html.erb` file
+### Convert Index/Show to Render Partial Collections (5 minutes / 2:05)
 
-- Copy the code for displaying the collection data into the `_todo` partial
-
-- Replace the existing code with a render method:
+- Create a `_todo.html.erb` file.
+- Copy the code for displaying the collection data into the `_todo` partial.
+- Replace the existing code with a render method...
 
 ```erb
 <%= #render partial: "todo", collection: @todos %>
 ```
 
-### You do: Use partials in tunr (10 min)
+### You Do: Use Partials in Tunr (15 minutes / 2:20)
+
+> 10 minutes exercise. 5 minutes review.
 
 Create a partial for artists and render it in the artists index
 
+## Closing/Questions (10 minutes / 2:30)
 
-
-## Exit Ticket (3 min)
-
-Before you leave, plase take ~3 minutes to complete [this exit ticket.](https://docs.google.com/forms/d/1d03NYFphG6m7yAMUY1OlnJZMQWof7Rt6b5MX3Xn4ZPs/viewform)
+<!-- AM: Add sample quiz questions. -->
 
 ## Additional Resources
 
