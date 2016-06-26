@@ -14,9 +14,9 @@ We've learned to do a lot so far: we've created simple apps that are able to int
 
 On top of that, the UI of our pages varies a lot between views. We can add redundant pieces to multiple views to get a consistent UI but there are better, more DRY ways to achieve the same end.
 
-# Update Feature
+## Feature: Update
 
-Create, read, and destroy are all you need if nothing ever changes and your users never make mistakes. So why bother learning update?
+Create, read, and destroy are all you need if nothing ever changes and your users never make mistakes. That, however, isn't always the case...
 
 ### Add appropriate routes (10 min)
 
