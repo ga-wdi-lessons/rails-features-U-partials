@@ -1,4 +1,4 @@
-# Rails Edit
+# Rails Edit, Update and Partials
 
 ## Learning Objectives
 
@@ -10,7 +10,9 @@
 
 ## Framing (5 min)
 
-We've learned to do a lot so far: we've created simple apps that are able to interact with a database. We can create, read, and destroy entries in our database but we can't yet update them. Currently the UI of our pages varies a lot between views. We can add redundant pieces to multiple views to get a consistent UI but there are better, more DRY ways to achieve the same end.
+We've learned to do a lot so far: we've created simple apps that are able to interact with a database. We can create, read and destroy entries in our database but we can't yet update them.
+
+On top of that, the UI of our pages varies a lot between views. We can add redundant pieces to multiple views to get a consistent UI but there are better, more DRY ways to achieve the same end.
 
 # Update Feature
 
@@ -54,24 +56,22 @@ end
 
 If I run `rake routes` one more time I'll notice nothing changed.
 
-Q. Why did I need to say `:only` to begin with?
-
 <details>
 <summary>
-A.
+  Q. Why did we need to say `:only` to begin with?
 </summary>
-<br>
-We don't want to implement routes that we don't support. Listing a route but not supporting it results in a 500 error, where as not having a route results in a 404 error (what we want).
-<br>
+  <br>
+  We don't want to implement routes that we don't support. Listing a route but not supporting it results in a 500 `Internal Server Error`, where as not having a route results in a 404 `Not Found` error. The latter indicates that the user did not make a valid request.
+  <br>
 </details>
 
-### Controller edit -get/read (5 min)
+### Add Edit to Controller (5 minutes)
 
-If I refresh the page I get a new error 😄!
+If we refresh the page we get a new error!
 
-![unkown action](images/unkown_action.png)
+![unknown action](images/unkown_action.png)
 
-To fix this new error I add a controller action
+To fix this new error let's add a controller action...
 
 ```rb
 def edit
@@ -79,37 +79,32 @@ def edit
 end
 ```
 
-### Build edit form view
+### Build Edit Form View
 
-If I refresh the page again I get another new error 😄!
+Let's refresh the page. Another new error!
 
 ![missing template](images/missing_template.png)
 
-Create a new file `app/views/todos/edit.html.erb` and copy existing `new` form to build the edit form view. Then add a title to both to help distinguish the two apart.
+Create a new file `app/views/todos/edit.html.erb` and copy the existing `new` form into here. Then add a title to both to help distinguish the two apart.
 
 ```html
 <h2>Edit</h2>
 ```
 
-### You do: Doc dive! - Form Helpers (10 min)
+### You Do: Doc Dive - Form Helpers (10 minutes)
 
 Read [form helpers](http://guides.rubyonrails.org/form_helpers.html#helpers-for-generating-form-elements) from 1.3 _Helpers for Generating Form Elements_ to 2.4 _PATCH, PUT, or DELETE_
 
-Try to write down answers to the following questions:
+Try to write down answers to the following questions...
 
-Q. What is a form helper?
+- What is a form helper?
+- How is the key used in params controlled?
+- What are the long and short styles of invoking `form_for`? Is there an advantage to one or the other?
+- Why did we not have to specify the method for the new & edit forms?
 
-Q. How is the key used in params controlled?
+### Add Update to Controller (5 minutes)
 
-Q. What are the long and short styles of invoking `form_for`? Is there an advantage to one or the other?
-
-Q. Why did we not have to specify the method for the new & edit forms?
-
-### Controller update -patch/update (5 min)
-
-If I try submitting the form now I'll again get the `Unknown action` error, this time for the `update action`. To fix it I need to add the appropriate controller action:
-
-The private method `todo_params` we created is called '[Strong Params](http://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters)' and it prevents [mass assingment attacks](https://en.wikipedia.org/wiki/Mass_assignment_vulnerability)
+If we try submitting the form now we'll again get the `Unknown action` error, this time for `update`. To fix it, we need to add the appropriate controller action...
 
 ```rb
 def update
@@ -119,11 +114,14 @@ def update
 end
 ```
 
+> The private method `todo_params` we created is called '[Strong Params](http://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters)' and it prevents [mass assignment attacks](https://en.wikipedia.org/wiki/Mass_assignment_vulnerability)
+
 ### Add links from an existing page to the edit page (5 min)
 
 I should now be able to edit/update my todos. It's awkward to manually got to `/edit`, a link to the page would be much better.
 
-Let's add a link_to helper to our show page
+Let's add a `link_to` helper to our show page...
+
 ```erb
 <h2><%= link_to "Edit", edit_todo_path(@todo) %></h2>
 ```
