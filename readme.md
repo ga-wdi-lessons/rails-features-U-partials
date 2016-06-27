@@ -323,14 +323,33 @@ Continue working on Tunr...
 
 ## Other Partials
 
-### Convert Index/Show to Render Partial Collections (5 minutes / 2:05)
+### Convert Index to Render Partial Collections (5 minutes / 2:05)
 
 - Create a `_todo.html.erb` file.
 - Copy the code for displaying the collection data into the `_todo` partial.
 - Replace the existing code with a render method...
 
 ```erb
+# _todo.html.erb
+
+<p>
+  <%= link_to todo.body, todo_path(todo) %> |
+  <%= link_to "Delete this todo", todo_path(todo),
+     method: :delete %> |
+  <%= link_to "Edit", edit_todo_path(todo) %>
+</p>
+```
+
+> This is the code we originally had inside of the `.each` statement in `index.html.erb`.
+
+```erb
+# index.html.erb
 <%= #render partial: "todo", collection: @todos %>
+```
+
+```erb
+# show.html.erb
+<%= render partial: "todo", object: @todo %>
 ```
 
 ### You Do: Use Partials in Tunr (15 minutes / 2:20)
