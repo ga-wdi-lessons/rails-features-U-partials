@@ -111,6 +111,15 @@ When we refresh the page, we get another error...
 
 ### Add Form To Edit View
 
+<details>
+  <summary><strong>Q: What Rails "helper" have you already used to generate a form?</strong></summary>
+
+  > `form_for`. We use it to build a form for a particular model.
+
+  <br>
+
+</details>
+
 Now let's add a form to our new edit view...
 
 ```erb
@@ -132,17 +141,67 @@ Now let's add a form to our new edit view...
 
 ### Add Update to Controller (5 minutes / 0:30)
 
-If we try submitting the form now we'll again get the `Unknown action` error, this time for `update`. To fix it, we need to add the appropriate controller action...
+If we try submitting the form now we'll again get the `Unknown action` error, this time for `update`. To fix it, we need to add the appropriate controller action.
 
-```rb
-def update
-  @todo = Todo.find(params[:id])
-  @todo.update(todo_params)
-  redirect_to todo_path(@todo)
-end
-```
+First, we need to tell our controller action which todo action we want to update.
 
-> The private method `todo_params` we created is called '[Strong Params](http://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters)' and it prevents [mass assignment attacks](https://en.wikipedia.org/wiki/Mass_assignment_vulnerability)
+<details>
+
+  <summary><strong>Q: How can we do that?</strong></summary>
+
+  ```rb
+  def update
+    @todo = Todo.find(params[:id])
+  end
+  ```
+
+  > Even though this isn't a GET request (i.e., no URL), the correct todo's id is being pass through params.
+
+</details>
+
+<br>
+
+Next, we need to update that todo with its new values.
+
+<details>
+
+  <summary><strong>Q: How can we do that?</strong></summary>
+
+  ```rb
+  def update
+    @todo = Todo.find(params[:id])
+    @todo.update(todo_params)
+  end
+  ```
+
+  > The private method `todo_params` we created is called '[Strong Params](http://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters)' and it prevents [mass assignment attacks](https://en.wikipedia.org/wiki/Mass_assignment_vulnerability)
+
+</details>
+
+<br>
+
+Now what happens when we try to update a todo?
+
+![update redirect](http://i.imgur.com/7HnennO.png)
+
+<details>
+
+  <summary><strong>Q: What should be our next move?</strong></summary>
+
+  We don't need an update view. We should, however, redirect the user back to somewhere in else in our application. How about the show page?
+
+  ```rb
+  def update
+    @todo = Todo.find(params[:id])
+    @todo.update(todo_params)
+    redirect_to todo_path(@todo)
+  end
+  ```
+
+</details>
+
+<br>
+
 
 ### Add Links to Show (5 minutes / 0:35)
 
