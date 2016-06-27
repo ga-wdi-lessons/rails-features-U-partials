@@ -61,8 +61,6 @@ If we run `rake routes` one more time we'll notice nothing changed.
     <strong>Q. What does <code>resources</code> do? Why did we need to say <code>:only</code> to begin with?</strong>
   </summary>
 
-  <br>
-
   <code>resources</code> sets up all the restful routes for a given model.
 
   We don't want to implement routes that we don't support. Listing a route but not supporting it results in a 500 `Internal Server Error`, where as not having a route results in a 404 `Not Found` error. The latter indicates that the user did not make a valid request.
@@ -78,8 +76,6 @@ If we refresh the page we get a new error...
 
 <details>
   <summary><strong>Q: What can we do to fix this?</strong></summary>
-
-  <br>
 
   Let's add a controller action...
 
@@ -129,8 +125,6 @@ Now let's add a form to our new edit view...
 
 <details>
   <summary><strong>Q: Why does this form look familiar?</strong></summary>
-
-  <br>
 
   > Because it's the exact same one we used in `new.html.erb`! Yes, there will be an opportunity to make this a bit more DRY later on in this lesson...
 
