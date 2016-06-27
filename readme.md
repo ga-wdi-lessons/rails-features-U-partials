@@ -139,7 +139,7 @@ Now let's add a form to our new edit view...
 
 </details>
 
-### Add Update to Controller (5 minutes / 0:30)
+### Add Update to Controller (5 minutes / 0:20)
 
 If we try submitting the form now we'll again get the `Unknown action` error, this time for `update`. To fix it, we need to add the appropriate controller action.
 
@@ -203,7 +203,7 @@ Now what happens when we try to update a todo?
 <br>
 
 
-### Add Links to Show (5 minutes / 0:35)
+### Add Links to Show (5 minutes / 0:25)
 
 We should now be able to edit/update our todos. It's awkward to manually have to add `/edit` in the URL bar. A link on a show page to `/edit` would be much better. Let's do that with a `link_to` helper...
 
@@ -213,9 +213,7 @@ We should now be able to edit/update our todos. It's awkward to manually have to
 
 ### Edit Data, Explore in Index/Show
 
-## Break (10 minutes / 0:45)
-
-## You Do: Add Edit/Update to Tunr (25 minutes / 1:10)
+## You Do: Add Edit/Update to Tunr (25 minutes / 0:50)
 
 > 20 minutes exercise. 5 minutes review.
 
@@ -235,11 +233,13 @@ We should now be able to edit/update our todos. It's awkward to manually have to
 6. Test editing data.
 7. Commit progress!
 
+## Break (10 minutes / 1:00)
+
 # Application Layout
 
 Notice that the views we have been creating are not complete HTML pages. They are actually partial pages. By default Rails uses the file `app/views/layous/application.html.erb` to wrap all of these partial pages with the appropriate missing bits of HTML. Rails finds the proper layout and combines it with the view corresponding to the appropriate controller action and renders the two as a single HTML file.
 
-### Yield (5 minutes / 1:15)
+### Yield (5 minutes / 1:05)
 
 If you take a look at that file you'll see...
 
@@ -250,11 +250,9 @@ If you take a look at that file you'll see...
 
 In other words yield is where the partial pages get inserted.
 
-### Content in Layout (5 minutes / 1:20)
+### Content in Layout (5 minutes / 1:10)
 
 If we wanted some content to remain the same across pages we could include it directly in the layout. Nav bars and footers are great candidates for things you might want to remain constant.
-
-<!-- AM: Change up footer. -->
 
 ```html
 <nav>
@@ -265,7 +263,7 @@ If we wanted some content to remain the same across pages we could include it di
 <%= yield %>
 
 <footer>
-  <p>Get stuff done!</p>
+  <p>(c) Maseda Industries 2016</p>
 </footer>
 ```
 
@@ -281,7 +279,7 @@ Instead of using the ones Rails looks for, you can explicitly tell it to use the
 
 The two files `new.html.erb` and `edit.html.erb` right now are identical. That's not very DRY. Fortunately Rails has something called *partials* that allow us to clean up our code.
 
-### You Do: Doc Dive - Partials (10 minutes / 1:30)
+### You Do: Doc Dive - Partials (10 minutes / 1:20)
 
 Read  [partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials) from 3.4 _Using Partials_ to 3.4.7 _Spacer Templates_
 
@@ -290,7 +288,7 @@ Try to write down answers to the following questions:
 - <strong>When are partials useful?</strong>
 - <strong>What can be included in a partial?</strong>
 
-### Convert Edit & New Forms to Partials (5 minutes / 1:35)
+### Convert Edit & New Forms to Partials (5 minutes / 1:25)
 
 Only two steps required here...
 - Create a new file in views called `_form.html.erb`
@@ -306,7 +304,7 @@ Only two steps required here...
 <%= render 'form' %>
 ```
 
-### You Do: Convert Forms to Partials (15 minutes / 1:50)
+### You Do: Convert Forms to Partials (15 minutes / 1:40)
 
 > 10 minutes exercise. 5 minutes review.
 
@@ -319,11 +317,11 @@ Continue working on Tunr...
 5. Test updating data
 6. Commit progress!
 
-## Break (10 minutes / 2:00)
+## Break (10 minutes / 1:50)
 
 ## Other Partials
 
-### Convert Index to Render Partial Collections (5 minutes / 2:05)
+### Convert Index to Render Partial Collections (5 minutes / 1:55)
 
 - Create a `_todo.html.erb` file.
 - Copy the code for displaying the collection data into the `_todo` partial.
@@ -352,13 +350,13 @@ Continue working on Tunr...
 <%= render partial: "todo", object: @todo %>
 ```
 
-### You Do: Use Partials in Tunr (15 minutes / 2:20)
+### You Do: Use Partials in Tunr (15 minutes / 2:10)
 
 > 10 minutes exercise. 5 minutes review.
 
 Create a partial for artists and render it in the artists index
 
-## Closing/Questions (10 minutes / 2:30)
+## Closing/Questions (10 minutes / 2:20)
 
 * What Rails helper do we use to create a form?
 * What is strong params and why do we use it to create/update?
