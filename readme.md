@@ -215,7 +215,7 @@ We should now be able to edit/update our todos. It's awkward to manually have to
 
 ## Break (10 minutes / 0:45)
 
-## You Do: Add Edit to Tunr (25 minutes / 1:10)
+## You Do: Add Edit/Update to Tunr (25 minutes / 1:10)
 
 > 20 minutes exercise. 5 minutes review.
 
@@ -341,7 +341,11 @@ Create a partial for artists and render it in the artists index
 
 ## Closing/Questions (10 minutes / 2:30)
 
-<!-- AM: Add sample quiz questions. -->
+* What Rails helper do we use to create a form?
+* What is strong params and why do we use it to create/update?
+* What is a partial? Why is it helpful?
+* What is the file naming convention for a partial?
+* How do we indicate that we are using a partial in a view?
 
 ## Additional Resources
 
