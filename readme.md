@@ -38,7 +38,6 @@ To fix this error we need to add a route for `edit`. While we're there, we'll go
 - *Update* will respond to the PATCH request sent by changing the appropriate entries in the database.
 
 ```rb
-# avoid if using all 7 actions
 Rails.application.routes.draw do
   resources :todos, only: [:index, :show, :new, :create, :destroy, :edit, :update]
 end
@@ -47,7 +46,7 @@ This will also change what we see if we run `rake routes` again.
 
 ### Remove `only:`
 
-Now that I have all 7 actions listed for resources I no longer need to say `only:`
+Now that we have all 7 actions listed for resources, we no longer need to say `only:`
 
 ```rb
 Rails.application.routes.draw do
@@ -55,7 +54,7 @@ Rails.application.routes.draw do
 end
 ```
 
-If we run `rake routes` one more time I'll notice nothing changed.
+If we run `rake routes` one more time we'll notice nothing changed.
 
 <details>
   <summary>
@@ -114,16 +113,28 @@ When we refresh the page, we get another error...
   <br>
 </details>
 
+### Add Form To Edit View
 
-### You Do: Doc Dive - Form Helpers (10 minutes / 0:25)
+Now let's add a form to our new edit view...
 
-Read [form helpers](http://guides.rubyonrails.org/form_helpers.html#helpers-for-generating-form-elements) from 1.3 _Helpers for Generating Form Elements_ to 2.4 _PATCH, PUT, or DELETE_
+```erb
+<%= form_for @todo do |f| %>
+  <%= f.label :body %>
+  <%= f.text_field :body %>
+  <%= f.label :author %>
+  <%= f.text_field :author %>
+  <%= f.submit %>
+<% end %>
+```
 
-Try to write down answers to the following questions...
-- <strong>What is a form helper?</strong>
-- <strong>How is the key used in params controlled?</strong>
-- <strong>What are the long and short styles of invoking `form_for`? Is there an advantage to one or the other?</strong>
-- <strong>Why did we not have to specify the method for the new & edit forms?</strong>
+<details>
+  <summary><strong>Q: Why does this form look familiar?</strong></summary>
+
+  <br>
+
+  > Because it's the exact same one we used in `new.html.erb`! Yes, there will be an opportunity to make this a bit more DRY later on in this lesson...
+
+</details>
 
 ### Add Update to Controller (5 minutes / 0:30)
 
