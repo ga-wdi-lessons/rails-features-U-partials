@@ -6,7 +6,7 @@
 - Introduce application layout
 - Convert edit & new forms to partials
 - Convert show/index to render partials for collections
-- Utilize Rails validations to protect application's state from bad data
+- Utilize Rails strong parameters to address the mass assignment vulnerability
 
 ## Framing
 
@@ -338,16 +338,16 @@ Continue working on Tunr...
 </p>
 ```
 
-> This is the code we originally had inside of the `.each` statement in `index.html.erb`.
+> The code above is what we originally had inside of the `.each` statement in `index.html.erb`, now inside `_todo.html.erb`.
 
 ```erb
 # index.html.erb
-<%= #render partial: "todo", collection: @todos %>
+<%= render @todos %>
 ```
 
 ```erb
 # show.html.erb
-<%= render partial: "todo", object: @todo %>
+<%= render @todo %>
 ```
 
 ### You Do: Use Partials in Tunr (15 minutes / 2:10)
@@ -368,4 +368,4 @@ Create a partial for artists and render it in the artists index
 
 - [RailsGuides: partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials)
 - [RailsGuides: form helpers](http://guides.rubyonrails.org/form_helpers.html)
-- [RialsGuides: action contorller](http://guides.rubyonrails.org/action_controller_overview.html)
+- [RailsGuides: action controller](http://guides.rubyonrails.org/action_controller_overview.html)
