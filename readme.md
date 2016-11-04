@@ -5,7 +5,7 @@
 - Implement edit & update features for a model in rails
 - Use application layout to structure rendered views
 - DRY up rails code by converting edit & new forms to partials
-- Convert show/index to render partials for collections
+- Convert show/index to render partials for atom
 - Utilize Rails strong parameters to address the mass assignment vulnerability
 
 ## Framing
@@ -343,11 +343,15 @@ Continue working on Tunr...
 
 ```erb
 # index.html.erb
+<%= render partial: "todo", collection: @todos %>
+# or
 <%= render @todos %>
 ```
 
 ```erb
 # show.html.erb
+<%= render partial: "todo", collection: @todos %>
+# or
 <%= render @todo %>
 ```
 
