@@ -2,9 +2,9 @@
 
 ## Learning Objectives
 
-- Implement the update feature for a model in rails
-- Introduce application layout
-- Convert edit & new forms to partials
+- Implement edit & update features for a model in rails
+- Use application layout to structure rendered views
+- DRY up rails code by converting edit & new forms to partials
 - Convert show/index to render partials for collections
 - Utilize Rails strong parameters to address the mass assignment vulnerability
 
@@ -222,10 +222,11 @@ We should now be able to edit/update our todos. It's awkward to manually have to
   - `checkout` the solution from yesterday
   - ...then create a new branch and switch to it `checkout -b <branchname>`
 
-  ```
+  > ```
   $ git checkout new-create-delete
   $ git checkout -b add-edit-feature
   ```
+
 2. Add the appropriate route for edit.
 3. Add controller actions for routes.
 4. Create an `edit.html.erb` view and copy in the new form, and modify it for edit.
